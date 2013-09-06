@@ -22,7 +22,7 @@
 $(call inherit-product-if-exists, vendor/huawei/viva/viva-vendor.mk)
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-dalvik-heap.mk)
 
 # overlay
 DEVICE_PACKAGE_OVERLAYS += device/huawei/viva/overlay
