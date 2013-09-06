@@ -7,8 +7,6 @@ $(call inherit-product, vendor/cm/config/common_full_phone.mk)
 # Inherit device configuration for viva gsm
 $(call inherit-product, vendor/cm/config/gsm.mk)
 
-
-
 # Release name
 PRODUCT_RELEASE_NAME := viva
 
@@ -30,3 +28,8 @@ PRODUCT_RELEASE_NAME := U9200
 PRODUCT_BRAND := Huawei
 PRODUCT_MODEL := U9200
 PRODUCT_MANUFACTURER := Huawei
+
+ifneq ($(CM_BUILDTYPE),UNOFFICIAL)
+    CM_BUILDTYPE := ShevT
+    CM_VERSION := $(PRODUCT_VERSION_MAJOR)-$(shell date -u +%Y%m%d-HH:MM)-$(CM_BUILDTYPE)-$(CM_BUILD)$(CM_EXTRAVERSION)
+endif

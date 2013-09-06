@@ -141,6 +141,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     SkLibTiJpeg_Test
 
+# SGX540 is slower with the scissor optimization enabled
+PRODUCT_PROPERTY_OVERRIDES += \
+       ro.hwui.disable_scissor_opt=true
+
 # Torch
 PRODUCT_PACKAGES += \
     Torch
@@ -198,11 +202,12 @@ ADDITIONAL_DEFAULT_PROPERTIES := \
 # as well - does not crash
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_DISPLAY_ID=JDQ39E
 
+# This device is hdpi.
 PRODUCT_CHARACTERISTICS      := default
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_TAGS                 += dalvik.gc.type-precise
-PRODUCT_AAPT_CONFIG          := normal hdpi xhdpi
-PRODUCT_AAPT_PREF_CONFIG     := xhdpi
-PRODUCT_LOCALES              += en_US xhdpi
+PRODUCT_AAPT_CONFIG          := normal hdpi
+PRODUCT_AAPT_PREF_CONFIG     := hdpi
+PRODUCT_LOCALES              += en_US hdpi
 BOARD_WLAN_DEVICE_REV        := bcm4330_b1
 WIFI_BAND                    := 802_11_ABG
