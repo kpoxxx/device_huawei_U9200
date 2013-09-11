@@ -14,7 +14,6 @@ ro.ril.hsdpa.category=10
 ro.ril.hsupa.category=6
 ro.ril.hsxpa=3
 ro.config.hw_addsettingsdbex=1
-ro.config.hw_flashless=true
 ro.config.fm_type=libbcmfm_if
 
 # Default network type.
