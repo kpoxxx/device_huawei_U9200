@@ -88,7 +88,7 @@ TARGET_PREBUILT_KERNEL := device/huawei/viva/kernel
 TARGET_PROVIDES_INIT_TARGET_RC := true
 
 # EGL
-BOARD_EGL_CFG := device/huawei/front/prebuilt/egl.cfg
+BOARD_EGL_CFG := device/huawei/viva/prebuilt/egl.cfg
 USE_OPENGL_RENDERER := true
 
 # Lights
