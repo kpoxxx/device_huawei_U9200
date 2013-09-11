@@ -1,4 +1,4 @@
-import init.viva.usb.rc
+import init.front.usb.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -34,17 +34,17 @@ on init
     mkdir /factory 0775 radio radio
 
     # nvm
-    mkdir /modem
-    mkdir /modem/modem_image
-    mkdir /modem/nvm1
-    mkdir /modem/nvm2
+    mkdir /modem 0775 radio radio
+    mkdir /modem/modem_image 0775 radio radio
+    mkdir /modem/nvm1 0775 radio radio
+    mkdir /modem/nvm2 0775 radio radio
 
     setprop ro.hwboottype boot_android
 
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
-    mount_all /fstab.viva
+    mount_all /fstab.front
 
     # nvm
     mount rootfs rootfs / rw remount
@@ -89,9 +89,9 @@ on post-fs-data
     chmod 0660 /data/misc/wifi/p2p_supplicant.conf
 
     mkdir /data/smc 0770 drmrpc drmrpc
-    chown drmrpc drmrpc /data/smc/counter.bin
-    chown drmrpc drmrpc /data/smc/storage.bin
-    chown drmrpc drmrpc /data/smc/system.bin
+#    chown drmrpc drmrpc /data/smc/counter.bin
+#    chown drmrpc drmrpc /data/smc/storage.bin
+#    chown drmrpc drmrpc /data/smc/system.bin
 
     setprop vold.post_fs_data_done 1
 
@@ -106,46 +106,12 @@ on boot
     chown system system /sys/block/mmcblk0/queue/scheduler
     chmod 0664 /sys/block/mmcblk0/queue/scheduler
 
-    chmod 0666 /dev/pvrsrvkm
-
     chmod 0444 /system/usr/keychars/omap4-keypad.kcm.bin
 
     #change the permissions for flashless download app */
     chmod 0660 /sys/devices/virtual/usbswitch/usbsw/swstate
     chown system system /sys/devices/virtual/usbswitch/usbsw/swstate
-    chmod 0660 /dev/ttyO0
-    chown radio radio /dev/ttyO0
-    chmod 0660 /dev/xmd-boot0
-    chown radio radio /dev/xmd-boot0
 
-    #Added begin for xgold-ril configuration
-    # change permissions for modem
-    chmod 0660 /dev/xmd-tty0
-    chmod 0660 /dev/xmd-tty1
-    chmod 0660 /dev/xmd-tty2
-    chmod 0660 /dev/xmd-tty3
-    chmod 0660 /dev/xmd-tty4
-    chmod 0660 /dev/xmd-tty5
-    chmod 0660 /dev/xmd-tty6
-    chmod 0660 /dev/xmd-tty7
-    chmod 0660 /dev/xmd-tty8
-    chmod 0660 /dev/xmd-tty9
-    chmod 0660 /dev/xmd-tty10
-    chmod 0660 /dev/xmd-tty11
-
-    chown radio radio /dev/xmd-tty0
-    chown radio radio /dev/xmd-tty1
-    chown radio radio /dev/xmd-tty2
-    chown radio radio /dev/xmd-tty3
-    chown radio radio /dev/xmd-tty4
-    chown system system /dev/xmd-tty5
-    chown system system /dev/xmd-tty6
-    chown radio radio /dev/xmd-tty7
-    chown radio radio /dev/xmd-tty8
-    chown media media /dev/xmd-tty8
-    chown radio radio /dev/xmd-tty9
-    chown radio radio /dev/xmd-tty10
-    chown radio radio /dev/xmd-tty11
     chmod 0664 /sys/devices/platform/xmm_boot/state
     chmod 0660 /sys/devices/platform/xmm_boot/io
     chmod 0660 /sys/devices/platform/xmm_boot/power
@@ -180,8 +146,6 @@ on boot
     chmod 0664 /sys/devices/system/cpu/cpu1/online
     chmod 666 /proc/cmdline
 
-    chown system system /dev/nve0
-    chmod 0660 /dev/nve0
     chown system system /sys/devices/platform/omapdss/display0/s3d_enable
     chown system system /sys/devices/platform/omapdss/display1/s3d_enable
     chown system system /sys/devices/platform/omapdss/display1/s3d_type
@@ -193,38 +157,28 @@ on boot
     chown system system /sys/bus/i2c/devices/1-006b/calling_limit
 
     # camera calibration - DCC folder permission
-    chown media media /data/misc/camera
-    chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
-    chown media media /data/misc/camera/R12_MVEN002_LD2_ND0_IR0_SH0_FL0_SVEN002_DCCID42
-    chown media media /data/misc/camera/R8_MVEN002_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1042
+#    chown media media /data/misc/camera
+#    chown media media /data/misc/camera/R12_MVEN001_LD1_ND0_IR0_SH0_FL0_SVEN001_DCCID43
+#    chown media media /data/misc/camera/R12_MVEN002_LD2_ND0_IR0_SH0_FL0_SVEN002_DCCID42
+#    chown media media /data/misc/camera/R8_MVEN002_LD2_ND0_IR0_SH0_FL1_SVEN003_DCCID1042
 
-    # change permissions for ION driver
-    chmod 0777 /dev/ion
-
+    chown radio radio /factory
+    chmod 0775 /factory
     # add symlink for HDCP key
-    symlink /factory/hdcp.keys /system/vendor/firmware/hdcp.keys
-
-    # change permissions for Bluetooth/FM/GPS
-    chmod 0666 /dev/ttyO1
-    chown bluetooth bluetooth /dev/ttyO1
+#    symlink /factory/hdcp.keys /system/vendor/firmware/hdcp.keys
 
     # power up/down interface
-    chmod 0666 /sys/class/rfkill/rfkill0/state
-    chmod 0666 /sys/class/rfkill/rfkill0/type
+    chmod 0777 /sys/class/rfkill/rfkill0/state
+    chmod 0777 /sys/class/rfkill/rfkill0/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
     chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
     restorecon /sys/class/rfkill/rfkill0/state
     restorecon /sys/class/rfkill/rfkill0/type
 
-    chmod 0644 /proc/bluetooth/sleep/proto
+    chmod 0660 /proc/bluetooth/sleep/proto
     chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chmod 0644 /proc/bluetooth/sleep/clkctrl
+    chmod 0660 /proc/bluetooth/sleep/clkctrl
     chown bluetooth bluetooth /proc/bluetooth/sleep/clkctrl
-
-    # bluetooth MAC address programming
-    chown bluetooth bluetooth ro.bt.bdaddr_path
-    chown bluetooth bluetooth /system/etc/bluetooth
-    setprop ro.bt.bdaddr_path "/system/etc/bluetooth/bdaddr"
 
     chown system system /dev/block/platform/omap/omap_hsmmc.1/by-name/oeminfo
     chmod 0660 /dev/block/platform/omap/omap_hsmmc.1/by-name/oeminfo
@@ -233,20 +187,6 @@ on boot
     chown system system /sys/devices/system/cpu/cpufreq/interactive/lpspeed_enabled
     chown system system /sys/devices/omapdss/display0/cabc_mode
     chown system system /sys/module/pvrsrvkm/parameters/sgx_freq_restrict
-
-    chown media media /dev/ttyO0
-
-    # change permissions for mtd device
-    chmod 0660 /dev/mtd/mtd0
-    chown media media /dev/mtd/mtd0
-
-    # my change permissions for i2c-2 device
-    chmod 0660 /dev/i2c-2
-    chown media media /dev/i2c-2
-
-    # We chown/chmod /factory because mount is run as root + defaults
-    chown radio radio /factory
-    chmod 0775 /factory
 
     chown system system /sys/class/backlight/lcd/brightness
     chown system system /sys/devices/platform/i2c_omap.4/i2c-4/4-0012/leds/button-backlight-tk/brightness
@@ -277,24 +217,27 @@ on boot
     chown system system /sys/bus/i2c/drivers/apds990x/4-0039/als_poll_delay
     chown system system /sys/bus/i2c/drivers/ltr-558/4-0023/enable_ps_sensor
     chown system system /sys/bus/i2c/drivers/ltr-558/4-0023/enable_als_sensor
+
     chown system system /sys/bus/i2c/drivers/tps61310/3-0033/tps61310_led_lightness
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_on
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_off
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_on
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_off
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_on
-    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_off
     chmod 0664 /sys/devices/platform/omap/omap_i2c.3/i2c-3/3-0033/tps61310_led_lightness
 
     #leds
-    chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_on
-    chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_off
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_on
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_off
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_on
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/red/delay_off
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_on
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_off
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_on
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/green/delay_off
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_on
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_off
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_on
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/blue/delay_off
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_on
+    chown system system /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_off
+    chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_on
+    chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-0045/leds/three_colors_led/delay_off
 
     #compass
     chmod 0664 /sys/devices/platform/omap/omap_i2c.4/i2c-4/4-000c/compass_info
@@ -362,7 +305,6 @@ service dbus /system/bin/dbus-daemon --system --nofork
     socket dbus stream 660 bluetooth bluetooth
     user bluetooth
     group bluetooth net_bt_admin
-
 
 service akmd8975 /system/bin/akmd8975 -m 3
     class main
@@ -557,30 +499,20 @@ service bluetoothd /system/bin/logwrapper /system/bin/bluetoothd -d -n
     class main
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
-   group bluetooth net_bt_admin misc
+    group bluetooth net_bt_admin misc
     disabled
 
-service kbtld /system/bin/sh /system/etc/bluetooth/kill-btld.sh
-    user root
-    group system bluetooth
-    disabled
-    oneshot
+#service kbtld /system/bin/sh /system/etc/bluetooth/kill-btld.sh
+#    user root
+#    group system bluetooth
+#    disabled
+#    oneshot
 
-service kbluetoothd /system/bin/sh /system/etc/bluetooth/kill-bluetoothd.sh
-    user root
-    group system bluetooth
-    disabled
-    oneshot
-
-service dhcpcd_brcm-pan /system/bin/dhcpcd -ABKL
-    class main
-    disabled
-    oneshot
-
-service iprenew_brcm-pan /system/bin/dhcpcd -n
-    class main
-    disabled
-    oneshot
+#service kbluetoothd /system/bin/sh /system/etc/bluetooth/kill-bluetoothd.sh
+#    user root
+#    group system bluetooth
+#    disabled
+#    oneshot
 
 service gpsd /system/bin/glgps -c /system/etc/gpsconfig.xml
     class main
