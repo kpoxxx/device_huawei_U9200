@@ -1,4 +1,4 @@
-import init.front.usb.rc
+import init.viva.usb.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -44,7 +44,7 @@ on init
 on fs
     setprop ro.crypto.tmpfs_options size=128m,mode=0771,uid=1000,gid=1000
     setprop ro.crypto.umount_sd false
-    mount_all /fstab.front
+    mount_all /fstab.viva
 
     # nvm
     mount rootfs rootfs / rw remount
