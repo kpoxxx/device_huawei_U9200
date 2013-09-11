@@ -17,16 +17,14 @@
 # limitations under the License.
 #
 
-
 # vendor
 $(call inherit-product-if-exists, vendor/huawei/viva/viva-vendor.mk)
 $(call inherit-product, hardware/ti/omap4xxx/omap4.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-$(call inherit-product, frameworks/native/build/phone-hdpi-dalvik-heap.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 # overlay
 DEVICE_PACKAGE_OVERLAYS += device/huawei/viva/overlay
-
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -64,16 +62,15 @@ PRODUCT_COPY_FILES += \
 
 # BT
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/bluetooth/audio.conf:system/etc/bluetooth/audio.conf \
-    $(LOCAL_PATH)/bluetooth/auto_pairing.conf:system/etc/bluetooth/auto_pairing.conf \
     $(LOCAL_PATH)/bluetooth/BCM4330B1.hcd:system/etc/bluetooth/BCM4330B1.hcd \
+    $(LOCAL_PATH)/bluetooth/audio.conf:system/etc/bluetooth/audio.conf \
+    $(LOCAL_PATH)/bluetooth/auto_pair_devlist.conf:system/etc/bluetooth/auto_pair_devlist.conf \
     $(LOCAL_PATH)/bluetooth/blacklist.conf:system/etc/bluetooth/blacklist.conf \
-    $(LOCAL_PATH)/bluetooth/did.conf:system/etc/bluetooth/did.conf \
+    $(LOCAL_PATH)/bluetooth/bt_did.conf:system/etc/bluetooth/bt_did.conf \
+    $(LOCAL_PATH)/bluetooth/bt_stack.conf:system/etc/bluetooth/bt_stack.conf \
     $(LOCAL_PATH)/bluetooth/init.bcm.chip_off.sh:system/etc/bluetooth/init.bcm.chip_off.sh \
     $(LOCAL_PATH)/bluetooth/init.bcm.chip_on.sh:system/etc/bluetooth/init.bcm.chip_on.sh \
     $(LOCAL_PATH)/bluetooth/input.conf:system/etc/bluetooth/input.conf \
-    $(LOCAL_PATH)/bluetooth/kill-bluetoothd.sh:system/etc/bluetooth/kill-bluetoothd.sh \
-    $(LOCAL_PATH)/bluetooth/kill-btld.sh:system/etc/bluetooth/kill-btld.sh \
     $(LOCAL_PATH)/bluetooth/main.conf:system/etc/bluetooth/main.conf \
     $(LOCAL_PATH)/bluetooth/network.conf:system/etc/bluetooth/network.conf
 
@@ -98,6 +95,7 @@ PRODUCT_COPY_FILES += \
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
     frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
@@ -116,8 +114,13 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
     frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml
 
+# Feature live wallpaper
 PRODUCT_COPY_FILES += $(call add-to-product-copy-files-if-exists,\
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml)
+
+# Wifi
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
 # Audio Packages
 PRODUCT_PACKAGES += \
@@ -135,7 +138,8 @@ PRODUCT_PACKAGES += \
     make_ext4fs \
     e2fsck \
     setup_fs \
-    libnetcmdiface
+    libnetcmdiface \
+    static_busybox
 
 #Lib Skia test
 PRODUCT_PACKAGES += \
@@ -143,7 +147,7 @@ PRODUCT_PACKAGES += \
 
 # SGX540 is slower with the scissor optimization enabled
 PRODUCT_PROPERTY_OVERRIDES += \
-       ro.hwui.disable_scissor_opt=true
+    ro.hwui.disable_scissor_opt=true
 
 # Torch
 PRODUCT_PACKAGES += \
@@ -163,20 +167,8 @@ PRODUCT_PACKAGES += \
     mischelp \
     libinvensense_mpl
 
-# for bugmailer
-#PRODUCT_PACKAGES += send_bug
-#PRODUCT_COPY_FILES += \
-#    system/extras/bugmailer/bugmailer.sh:system/bin/bugmailer.sh \
-#    system/extras/bugmailer/send_bug:system/bin/send_bug
-
 #Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.heapstartsize=8m \
-    dalvik.vm.heapgrowthlimit=64m \
-    dalvik.vm.heapsize=256m \
-    dalvik.vm.heaptargetutilization=0.75 \
-    dalvik.vm.heapminfree=2m \
-    dalvik.vm.heapmaxfree=8m \
     dalvik.vm.heaputilization=0.75 \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.dexopt-flags=m=y \
@@ -200,7 +192,7 @@ ADDITIONAL_DEFAULT_PROPERTIES := \
 # Here crashes gallery
 # if ro.build.display.id is such "cm_viva-userdebug 4.2.2 JDQ39E eng.shev.20130805.153138 test-keys" then gellry crashshshsh
 # as well - does not crash
-PRODUCT_BUILD_PROP_OVERRIDES += BUILD_DISPLAY_ID=JDQ39E
+PRODUCT_BUILD_PROP_OVERRIDES += BUILD_DISPLAY_ID=JDQ39E-ShevT
 
 # This device is hdpi.
 PRODUCT_CHARACTERISTICS      := default
@@ -209,5 +201,3 @@ PRODUCT_TAGS                 += dalvik.gc.type-precise
 PRODUCT_AAPT_CONFIG          := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG     := hdpi
 PRODUCT_LOCALES              += en_US hdpi
-BOARD_WLAN_DEVICE_REV        := bcm4330_b1
-WIFI_BAND                    := 802_11_ABG
