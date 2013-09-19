@@ -118,10 +118,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += $(call add-to-product-copy-files-if-exists,\
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml)
 
-# Wifi
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/prebuilt/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
-
 # Audio Packages
 PRODUCT_PACKAGES += \
     audio.usb.default \
