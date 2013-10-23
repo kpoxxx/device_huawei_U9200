@@ -32,7 +32,6 @@ PRODUCT_PACKAGES += \
 
 # PowerHAL
 PRODUCT_PACKAGES += \
-    audio.primary.viva \
     power.viva \
     libedid \
     hwcomposer.viva \
