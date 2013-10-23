@@ -27,7 +27,6 @@
 
     <!-- for the transparency of the bottom field (by holl 4pda) -->
     <color name="incall_call_banner_background">#80000000</color>
-    <color name="incall_call_banner_background_bottom">#00000000</color>
     <dimen name="call_banner_height">70.0dip</dimen>
     <dimen name="call_banner_side_padding">10.0dip</dimen>
     <dimen name="call_banner_top_bottom_padding">10.0dip</dimen>
