@@ -30,13 +30,6 @@ DEVICE_PACKAGE_OVERLAYS += device/huawei/viva/overlay
 PRODUCT_PACKAGES += \
     Camera
 
-# PowerHAL
-PRODUCT_PACKAGES += \
-    power.viva \
-    libedid \
-    hwcomposer.viva \
-    libion_ti
-
 # Ramdisk
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ramdisk/fstab.viva:root/fstab.viva \
@@ -121,6 +114,11 @@ PRODUCT_COPY_FILES += \
 # Feature live wallpaper
 PRODUCT_COPY_FILES += $(call add-to-product-copy-files-if-exists,\
     packages/wallpapers/LivePicker/android.software.live_wallpaper.xml:system/etc/permissions/android.software.live_wallpaper.xml)
+
+# PowerHAL
+PRODUCT_PACKAGES += \
+    power.viva \
+    hwcomposer.viva
 
 # Audio Packages
 PRODUCT_PACKAGES += \
