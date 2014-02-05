@@ -41,7 +41,7 @@
 /dev/xmd-tty10         0660  radio       radio
 /dev/xmd-tty11         0660  radio       radio
 
-/dev/ttyO0             0660  media       media
+/dev/ttyO0             0660  system      radio
 /dev/xmd-boot0         0660  radio       radio
 
 /dev/nve0              0660  system      system
@@ -57,7 +57,7 @@
 
 # nvm
 /modem/modem_image/*   0660  radio       radio
-/modem/nvm1/* 0660           radio       radio
-/modem/nvm2/* 0660           radio       radio
+/modem/nvm1/*          0660  radio       radio
+/modem/nvm2/*          0660  radio       radio
 
 /dev/bus/usb/*         0660  system      usb
